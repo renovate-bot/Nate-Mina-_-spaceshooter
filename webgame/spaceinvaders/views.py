@@ -1,6 +1,5 @@
 from django.shortcuts import render
-from django.conf import settings
-import os
+
 
 def download(request):
     # Path to the downloadable ZIP file (place your game ZIP in static/spaceinvaders/)
