@@ -50,6 +50,7 @@ except Exception:
     pass
 
 # Game objects
+
 player = None
 enemies = []
 bullets = []
@@ -131,6 +132,7 @@ def reset_game_state():
 
 reset_game_state()
 
+
 # Intro screen
 show_intro = True
 while show_intro:
@@ -156,7 +158,6 @@ running = True
 game_over = False
 game_win = False
 while running:
-    global player, enemies, bullets, explosions, powerups, powerup_timer, rapid_fire, rapid_timer, shield, shield_timer, lives, invulnerable, score, frame_count, game_over, game_win
     if not game_over and not game_win:
         screen.fill(BLACK)
         frame_count += 1

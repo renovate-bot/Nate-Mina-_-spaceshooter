@@ -39,9 +39,20 @@ try:
 except Exception:
     pass
 
+# Background music
+try:
+    music_path = os.path.join('assets', 'music.ogg')
+    if os.path.exists(music_path):
+        pygame.mixer.music.load(music_path)
+        pygame.mixer.music.set_volume(0.5)
+        pygame.mixer.music.play(-1)  # Loop forever
+except Exception:
+    pass
+
 # Game objects
-player = Player(SCREEN_WIDTH, SCREEN_HEIGHT)
-enemies = [Enemy(x, 50) for x in range(50, SCREEN_WIDTH - 50, 100)]
+
+player = None
+enemies = []
 bullets = []
 explosions = []
 powerups = []
@@ -99,6 +110,48 @@ try:
         LIFE_ICON = pygame.transform.scale(LIFE_ICON, (28, 18))
 except Exception:
     LIFE_ICON = None
+
+def reset_game_state():
+    global player, enemies, bullets, explosions, powerups, powerup_timer, rapid_fire, rapid_timer, shield, shield_timer, lives, invulnerable, score, frame_count, game_over, game_win
+    player = Player(SCREEN_WIDTH, SCREEN_HEIGHT)
+    enemies = [Enemy(x, 50) for x in range(50, SCREEN_WIDTH - 50, 100)]
+    bullets = []
+    explosions = []
+    powerups = []
+    powerup_timer = 0
+    rapid_fire = False
+    rapid_timer = 0
+    shield = False
+    shield_timer = 0
+    lives = 3
+    invulnerable = 0
+    score = 0
+    frame_count = 0
+    game_over = False
+    game_win = False
+
+reset_game_state()
+
+
+# Intro screen
+show_intro = True
+while show_intro:
+    screen.fill((10, 10, 30))
+    title = HUD_FONT.render("SPACE INVADERS", True, (0,255,200))
+    shadow = HUD_FONT.render("SPACE INVADERS", True, (0,0,0))
+    screen.blit(shadow, (SCREEN_WIDTH//2 - title.get_width()//2 + 2, 102))
+    screen.blit(title, (SCREEN_WIDTH//2 - title.get_width()//2, 100))
+    instr = HUD_FONT.render("Press any key to start", True, (255,255,255))
+    screen.blit(instr, (SCREEN_WIDTH//2 - instr.get_width()//2, 220))
+    controls = font.render("Arrows: Move   Space: Shoot   R: Restart   Q/Esc: Quit", True, (200,200,255))
+    screen.blit(controls, (SCREEN_WIDTH//2 - controls.get_width()//2, 300))
+    pygame.display.flip()
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+        if event.type == pygame.KEYDOWN:
+            show_intro = False
 
 # Game loop
 running = True
@@ -272,23 +325,7 @@ while running:
                 running = False
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_r:
-                    # Reset all game state
-                    player = Player(SCREEN_WIDTH, SCREEN_HEIGHT)
-                    enemies = [Enemy(x, 50) for x in range(50, SCREEN_WIDTH - 50, 100)]
-                    bullets = []
-                    explosions = []
-                    powerups = []
-                    powerup_timer = 0
-                    rapid_fire = False
-                    rapid_timer = 0
-                    shield = False
-                    shield_timer = 0
-                    lives = 3
-                    invulnerable = 0
-                    score = 0
-                    frame_count = 0
-                    game_over = False
-                    game_win = False
+                    reset_game_state()
                 if event.key == pygame.K_q or event.key == pygame.K_ESCAPE:
                     running = False
 

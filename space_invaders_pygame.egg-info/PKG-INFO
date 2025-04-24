@@ -1,4 +1,4 @@
-Metadata-Version: 2.4
+Metadata-Version: 2.2
 Name: space-invaders-pygame
 Version: 1.0.0
 Summary: A simple Space Invaders-style arcade game built with Pygame.
